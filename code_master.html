@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Code Player</title>
+<script type="text/javascript" src="jquery.js"></script>
+<style>
+body {
+margin:0;
+padding:0;
+}
+#menubar {
+width:100%;
+height:50px;
+background-color:grey;
+color:white;
+border-bottom:1px solid grey;
+font-family:"Lucida Grande",sans-serif;
+
+font-weight:bold;
+}
+
+#logo {
+font-size:2em;
+padding:5px;
+float:left;
+color:yellow;
+}
+
+#buttonDiv{
+float:right;
+padding:10px 20px 0 0;
+}
+
+#runButton {
+font-size:1.2em;
+}
+
+#toggles {
+width:189px;
+list-style:none;
+margin:0 auto;
+border-radius:3px;
+height:27px;
+border:1px solid #e0e0e0;
+padding:0;
+position:relative;
+top:10px;
+}
+
+#toggles li {
+float:left;
+border-right:1px solid #e0e0e0;
+padding:5px;
+}
+#break {
+	clear:both;
+}
+
+.codeContainer {
+position:relative;
+	height:100%;
+	width:50%;
+	float:left;
+}
+.codeLabel {
+position:absolute;
+right:10px;
+top:10px;
+font-weight:bold;
+}
+
+.codeContainer textarea{
+width:100%;
+height:100%;
+border:none;
+border-right:1px solid grey;
+font-family:monotype;
+font-size:1.2em;
+padding:25px 0 0 10px;
+box-sizing:border-box;
+
+}
+
+#CSSContainer,#JSContainer{
+display:none;
+}
+
+#ResultContainer iframe{
+	padding:25px 5px 0 5px;
+}
+
+iframe {
+height:100%;
+position:relative;
+left:20px;
+border:none;
+}
+
+.selected {
+background-color:white;
+color:orange;
+}
+</style>
+</head>
+<body>
+<div id="wrapper">
+<div id="menubar">
+	<div id="logo">Coding Master</div>
+	<div id="buttonDiv">
+		<button id="runButton">Run</button>
+	</div>
+    <ul id="toggles">
+		<li class="toggle selected">HTML</li>
+		<li class="toggle">CSS</li>
+		<li class="toggle">JS</li>
+		<li class="toggle selected" style="border:none;">Result</li>
+	</ul>
+</div>
+	<div class="break"></div>
+		<div class="codeContainer" id="HTMLContainer">
+		    <div class="codeLabel">HTML</div>
+			<textarea id="htmlCode">Write Here</textarea>
+		</div>
+		
+		<div class="codeContainer" id="CSSContainer">
+		    <div class="codeLabel">CSS</div>
+			<textarea id="cssCode">Write Here</textarea>
+		</div>
+		
+		<div class="codeContainer" id="JSContainer">
+		    <div class="codeLabel">JS</div>
+			<textarea id="jsCode">Write Here</textarea>
+		</div>
+		
+		<div class="codeContainer" id="ResultContainer">
+		    <div class="codeLabel">Result</div>
+			<iframe id="selectme">Example code</iframe>
+		</div>
+</div>
+
+<script>
+var windowHeight=$(window).height();
+var headerHeight=$("#menubar").height();
+$(".codeContainer").height(windowHeight-headerHeight +"px");
+
+$(".toggle").click(function() {
+
+$(this).toggleClass("selected");
+var activeDiv=$(this).html();
+$("#"+activeDiv+"Container").toggle();
+
+var showingDivs=$(".codeContainer").filter(function() {
+
+return ($(this).css("display")!="none");
+}).length;
+
+var width=100/showingDivs;
+$(".codeContainer").width(width+"%");
+
+});
+
+$("#runButton").click(function() {
+$("iframe").contents().find("html").html('<style>'+$("#cssCode").val()+'</style>'+$("#htmlCode").val());
+
+document.getElementById("selectme").contentWindow.eval($("#jsCode").val());
+});
+
+</script>
+
+</body>
+</html>
